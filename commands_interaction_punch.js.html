@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: utils/naofumi.js</title>
+    <title>JSDoc: Source: commands/interaction/punch.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: utils/naofumi.js</h1>
+    <h1 class="page-title">Source: commands/interaction/punch.js</h1>
 
     
 
@@ -28,86 +28,48 @@
         <article>
             <pre class="prettyprint source linenums"><code>
 /**
- * @description Les utilitaires de Naofumi
+ * @description Cette commande permet de frapper une cible
  * @author gelo
- * @module utils
+ * @module commands/punch
  */
 
-const { MessageEmbed, User } = require("discord.js");
-const { halyma } = require("halymafunctions");
-const api = require("naofumiapi");
+const { SlashCommandBuilder } = require("@discordjs/builders");
+const { social } = require("../../utils/naofumi");
 
-/**
- * @function multiline
- * @description Affiche un message sur plusieurs lignes en console
- * @param {Array} messages 
- */
+module.exports = {
 
-function multiline(messages = [])
-{
-    console.log(messages.push("\n"))
-}
+    data: new SlashCommandBuilder()
+        .setName("hug")
+        .setDescription("Faire un câlin à un utilisateur")
+        .addUserOption(option =>
+            option
+                .setName("target")
+                .setDescription("La personne que vous souhaitez câliner")
+        ),
 
-
-/**
- * @function createSocial
- * @description Retourne un embed différent en fonction du nom de l'interaction
- * @param {{interactionName, author, title}} param0 
- * @returns {Embed}
- */
-
-async function createSocial({ interactionName = "", author, title = "" })
-{
-    const interaction = await api.get.gif(interactionName)
-    return halyma.embed({
-        author: [title, author.displayAvatarURL()],
-        image: interaction.url,
-        description: `Vous ne voyez pas l'image ? [Cliquez ici](${ interaction.url })`
-    });
-}
-
-
-/**
- * @class module:utils.Error
- * @classdesc Multiples méthodes pour récupérer des embeds d'erreurs
- */
-
-class Error
-{
-
-    /**
-     * @method module:utils.Error#noperm
-     * @returns {Embed}
-     */
-
-    static noperm()
+    execute: async (interaction, client) =>
     {
-        return halyma.embed({
-            color: "RED",
-            title: ":warning: Erreur",
-            description: "Vous n'avez pas la permission de faire ceci"
-        })
+
+        /**
+         * @function createPunchEmbed
+         * @description Retourne un embed contenant un punch gif
+         * @returns {Embed}
+         */
+        async function createPunchEmbed()
+        {
+            const target = interaction.options.getUser("target") || client.user;
+            return await social.create({
+                interactionName: interaction.commandName,
+                author: interaction.user,
+                title: `${ interaction.user.username } frappe ${ target.username }`
+            });
+        }
+
+        interaction.reply({ embeds: [await createPunchEmbed()] });
+
     }
 
-
-    /**
-     * @method module:utils.Error#custom
-     * @param {string} error 
-     * @returns {Embed}
-     */
-
-    static custom(error = "")
-    {
-        return halyma.embed({
-            color: "RED",
-            title: ":warning: Erreur",
-            description: error
-        })
-    }
-
-
-}
-</code></pre>
+}</code></pre>
         </article>
     </section>
 
