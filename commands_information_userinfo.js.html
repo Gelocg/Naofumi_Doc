@@ -116,6 +116,10 @@ module.exports = {
          * @param {string} activityType 
          * @returns {string}
          * 
+         * @example
+         * getFrenchActivityType("PLAYING")
+         * // return "Joue à"
+         * 
          */
         function getFrenchActivityType(activityType)
         {
@@ -136,6 +140,10 @@ module.exports = {
          * "Activity.type Activity.name \n Activity.details \n Activity.state"
          * S'il n'y a aucune activitée, retourne "Ne fait rien"
          * 
+         * @example
+         * getMemberActivities(interaction.member)
+         * // return "joue à Visual Studio Code Editing userinfo.js Workspace: naofumi_v2"
+         * 
          * @param {Member} target
          * @returns {string}
          */
@@ -154,6 +162,10 @@ module.exports = {
          * @function getMemberStatus
          * @description Retourne le status de la cible.
          * Si l'utilisateur n'a pas de status detécté (se qui arrive quand l'utilisateur est offline ou invisible) retourne "Invisible ou deconnecté"
+         * 
+         * @example
+         * getMemberStatus(interaction.member)
+         * // return "Ne pas déranger"
          * 
          * @param {Member} target 
          * @returns {string}
