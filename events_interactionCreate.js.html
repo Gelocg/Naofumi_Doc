@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> commands/information/avatar.js</title>
+  <title> events/interactionCreate.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>commands/information/avatar.js</h1>
+                    <h1>events/interactionCreate.js</h1>
                 </header>
                 
 
@@ -87,87 +87,38 @@
         <article>
             <pre class="prettyprint source linenums"><code>
 /**
- * @file commands/information/anime.js
- * @description Cette commande permet de rechercher et récupérer des informations sur un anime
+ * @file events/interactionCreate.js
+ * @description Détecter quand une interaction est créé
  * @author gelo
- * @module commands/avatar
+ * @module commands/kiss
  */
 
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { halyma } = require("halymafunctions");
+const { error } = require("../utils/naofumi");
 
-module.exports = {
+module.exports = async (client, interaction) =>
+{
 
-    data: new SlashCommandBuilder()
-        .setName("avatar")
-        .setDescription("Récupérer l'avatar d'un utilisateur")
-        .addUserOption(option =>
-            option
-                .setName("user")
-                .setDescription("L'utilisateur dont vous souhaitez récupérer l'avatar")
-        ),
-
-    execute: async (interaction, client) =>
+    /**
+     * @function executeCommand
+     * @description Execute la commande si l'interaction en est une
+     */
+    function executeCommand()
     {
+        if (!interaction.isCommand()) return;
 
-        const target = interaction.options.getUser("user") || interaction.user;
+        const command = client.commands.get(interaction.commandName);
+        if (!command) return;
 
-        /**
-         * @function generateAvatarLink
-         * @description Retourne un lien de l'avatar de la cible, dans le format indiqué
-         * @param {string} format 
-         * @returns {string} Lien de l'avatar
-         */
-        function generateAvatarLink(format)
-        {
-            return target.displayAvatarURL({ size: 1024, dynamic: true, format: format });
-        }
-
-        /**
-         * @function generateTitle
-         * @description Retourne une chaine de caractère utilisé pour le titre de l'embed.
-         * Elle vérifie qui est la cible de la commande Avatar si la cible est l'auteur de la commande il retourner
-         * une chaine de caracètre différente de celle retourner quand la cible n'est pas l'auteur
-         * @returns {string}
-         */
-        function generateTitle()
-        {
-            if (target === interaction.user)
-                return `${ target.username }, voici ton avatar`
-            else
-                return `${ interaction.user.username }, voici l'avatar de ${ target.username }`
-        }
-
-        /**
-         * @function generateAvatarEmbed
-         * @description Retourne un embed de l'avatar de la cible
-         * @returns {Embed}
-         */
-        function generateAvatarEmbed()
-        {
-
-            const avatarURL = generateAvatarLink("webp"),
-                description = `[png](${ generateAvatarLink("png") }) - [jpg](${ generateAvatarLink("jpg") }) - [gif](${ generateAvatarLink("gif") })`;
-
-            return halyma.embed({
-
-                image: avatarURL,
-                description: description,
-
-                author: [
-                    generateTitle(),
-                    interaction.user.displayAvatarURL()
-                ]
-
+        if (command.permission &amp;&amp; !interaction.member.hasPermission(command.permission))
+            return interaction.reply({
+                ephemeral: true,
+                embeds: [error.noperm()]
             });
 
-        }
-
-        interaction.reply({
-            embeds: [generateAvatarEmbed()]
-        });
-
+        command.execute(interaction, client);
     }
+
+    executeCommand();
 
 }</code></pre>
         </article>

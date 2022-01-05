@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> commands/information/avatar.js</title>
+  <title> commands/interaction/hug.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>commands/information/avatar.js</h1>
+                    <h1>commands/interaction/hug.js</h1>
                 </header>
                 
 
@@ -87,85 +87,45 @@
         <article>
             <pre class="prettyprint source linenums"><code>
 /**
- * @file commands/information/anime.js
- * @description Cette commande permet de rechercher et récupérer des informations sur un anime
+ * @file commands/interaction/hug.js
+ * @description Cette commande permet de faire un câlin à une cible
  * @author gelo
- * @module commands/avatar
+ * @module commands/hug
  */
 
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { halyma } = require("halymafunctions");
+const { social } = require("../../utils/naofumi");
 
 module.exports = {
 
     data: new SlashCommandBuilder()
-        .setName("avatar")
-        .setDescription("Récupérer l'avatar d'un utilisateur")
+        .setName("hug")
+        .setDescription("Faire un câlin à un utilisateur")
         .addUserOption(option =>
             option
-                .setName("user")
-                .setDescription("L'utilisateur dont vous souhaitez récupérer l'avatar")
+                .setName("target")
+                .setDescription("La personne que vous souhaitez câliner")
         ),
 
     execute: async (interaction, client) =>
     {
 
-        const target = interaction.options.getUser("user") || interaction.user;
-
         /**
-         * @function generateAvatarLink
-         * @description Retourne un lien de l'avatar de la cible, dans le format indiqué
-         * @param {string} format 
-         * @returns {string} Lien de l'avatar
-         */
-        function generateAvatarLink(format)
-        {
-            return target.displayAvatarURL({ size: 1024, dynamic: true, format: format });
-        }
-
-        /**
-         * @function generateTitle
-         * @description Retourne une chaine de caractère utilisé pour le titre de l'embed.
-         * Elle vérifie qui est la cible de la commande Avatar si la cible est l'auteur de la commande il retourner
-         * une chaine de caracètre différente de celle retourner quand la cible n'est pas l'auteur
-         * @returns {string}
-         */
-        function generateTitle()
-        {
-            if (target === interaction.user)
-                return `${ target.username }, voici ton avatar`
-            else
-                return `${ interaction.user.username }, voici l'avatar de ${ target.username }`
-        }
-
-        /**
-         * @function generateAvatarEmbed
-         * @description Retourne un embed de l'avatar de la cible
+         * @function createHugEmbed
+         * @description Retourne un embed contenant un gif de câlin
          * @returns {Embed}
          */
-        function generateAvatarEmbed()
+        async function createHugEmbed()
         {
-
-            const avatarURL = generateAvatarLink("webp"),
-                description = `[png](${ generateAvatarLink("png") }) - [jpg](${ generateAvatarLink("jpg") }) - [gif](${ generateAvatarLink("gif") })`;
-
-            return halyma.embed({
-
-                image: avatarURL,
-                description: description,
-
-                author: [
-                    generateTitle(),
-                    interaction.user.displayAvatarURL()
-                ]
-
+            const target = interaction.options.getUser("target") || client.user;
+            return await social.create({
+                interactionName: "hug",
+                author: interaction.user,
+                title: `${ interaction.user.username } fait un câlin à ${ target.username }`
             });
-
         }
 
-        interaction.reply({
-            embeds: [generateAvatarEmbed()]
-        });
+        interaction.reply({ embeds: [await createHugEmbed()] });
 
     }
 

@@ -68,7 +68,7 @@
             
             <nav>
                 
-                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#createChannelInfoVariables">createChannelInfoVariables</a></li><li><a href="global.html#createClient">createClient</a></li><li><a href="global.html#createHandler">createHandler</a></li><li><a href="global.html#generateAvatarEmbed">generateAvatarEmbed</a></li><li><a href="global.html#generateAvatarLink">generateAvatarLink</a></li><li><a href="global.html#generateHelpDescription">generateHelpDescription</a></li><li><a href="global.html#generateHelpEmbed">generateHelpEmbed</a></li><li><a href="global.html#generateTitle">generateTitle</a></li><li><a href="global.html#getAnimeNameList">getAnimeNameList</a></li><li><a href="global.html#getAnimeRow">getAnimeRow</a></li><li><a href="global.html#getFrenchActivityType">getFrenchActivityType</a></li><li><a href="global.html#getMemberActivities">getMemberActivities</a></li><li><a href="global.html#getMemberStatus">getMemberStatus</a></li><li><a href="global.html#getTargetInfos">getTargetInfos</a></li><li><a href="global.html#getTargetInfosEmbed()">getTargetInfosEmbed()</a></li><li><a href="global.html#startBot">startBot</a></li></ul></div>
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Modules</h3><ul><li><a href="module-commands_anime.html">commands/anime</a></li><li><a href="module-commands_avatar.html">commands/avatar</a></li><li><a href="module-commands_channelinfo.html">commands/channelinfo</a></li><li><a href="module-commands_help.html">commands/help</a></li><li><a href="module-commands_hug.html">commands/hug</a></li><li><a href="module-commands_kiss.html">commands/kiss</a></li><li><a href="module-commands_pat.html">commands/pat</a></li><li><a href="module-commands_userinfo.html">commands/userinfo</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-utils.Error.html">Error</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createClient">createClient</a></li><li><a href="global.html#createHandler">createHandler</a></li><li><a href="global.html#startBot">startBot</a></li></ul></div>
                 
             </nav>
         </div>
@@ -88,8 +88,9 @@
             <pre class="prettyprint source linenums"><code>
 /**
  * @file commands/information/userinfo.js
- * @description Commande userinfo
+ * @description Cette commande permet de récupérer des informations sur une cible
  * @author gelo
+ * @module commands/userinfo
  */
 
 const { SlashCommandBuilder } = require("@discordjs/builders");
@@ -114,6 +115,7 @@ module.exports = {
          * @description Retourne le type d'activité traduit en français
          * @param {string} activityType 
          * @returns {string}
+         * 
          */
         function getFrenchActivityType(activityType)
         {
@@ -133,6 +135,7 @@ module.exports = {
          * @description Retourne les activitées de l'utilisateur au format :
          * "Activity.type Activity.name \n Activity.details \n Activity.state"
          * S'il n'y a aucune activitée, retourne "Ne fait rien"
+         * 
          * @param {Member} target
          * @returns {string}
          */
@@ -151,6 +154,7 @@ module.exports = {
          * @function getMemberStatus
          * @description Retourne le status de la cible.
          * Si l'utilisateur n'a pas de status detécté (se qui arrive quand l'utilisateur est offline ou invisible) retourne "Invisible ou deconnecté"
+         * 
          * @param {Member} target 
          * @returns {string}
          */
@@ -167,6 +171,7 @@ module.exports = {
         /**
          * @function getTargetInfos
          * @description Retourne les informations de la cible sous forme d'objet JSON contenant les variables
+         * 
          * @returns {{member, user, id, color, activity, status, nickname, isBooster, DiscordAccountCreatedAt, guildMemberCreatedAt, roles}}
          */
         function getTargetInfos()
@@ -193,8 +198,9 @@ module.exports = {
         }
 
         /**
-         * @function getTargetInfosEmbed()
+         * @function getTargetInfosEmbed
          * @description Retourne un embed contenant toutes les informations sur la cible
+         * 
          * @returns {Embed}
          */
         function getTargetInfosEmbed()

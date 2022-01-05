@@ -5,7 +5,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> Global</title>
+  <title> Error</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -73,8 +73,8 @@
         <div class="core" id="main-content-wrapper">
             <div class="content">
                 <header class="page-title">
-                    <p>Title</p>
-                    <h1>Global</h1>
+                    <p>Class</p>
+                    <h1>Error</h1>
                 </header>
                 
 
@@ -85,7 +85,10 @@
 
 <header>
     
-        <h2></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-utils.html">utils</a>.</span>Error<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description">Multiples méthodes pour récupérer des embeds d'erreurs</div>
         
     
 </header>
@@ -94,88 +97,28 @@
     <div class="container-overview">
     
         
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-    
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h1>Methods</h1>
-            <div class="members">
-            
-                <div class="member">
+            <div class='vertical-section'>
+                <div class="members">
+                    <div class="member">
+                        <div class=name>
+                            <span class="tag">Constructor</span>
+                        </div>
+                        
 
 
     
-    <h4 class="name" id="createClient">
-        <a class="href-link" href="#createClient">#</a>
+    <h4 class="name" id="Error">
+        <a class="href-link" href="#Error">#</a>
         
         <span class="code-name">
             
-                createClient<span class="signature">()</span><span class="type-signature"> &rarr; {client}</span>
+                new Error<span class="signature">()</span><span class="type-signature"></span>
             
         </span>
     </h4>
     
 
     
-    
-    <div class="description">
-        Créer une instance de discord.Client avec les intents requis
-    </div>
     
 
 
@@ -223,9 +166,9 @@
 
     
         <p class="tag-source">
-            <a href="main.js.html" class="button">View Source</a>
+            <a href="utils_naofumi.js.html" class="button">View Source</a>
             <span>
-                <a href="main.js.html">main.js</a>, <a href="main.js.html#line37">line 37</a>
+                <a href="utils_naofumi.js.html">utils/naofumi.js</a>, <a href="utils_naofumi.js.html#line38">line 38</a>
             </span>
         </p>
     
@@ -248,54 +191,52 @@
 
 
 
-    <div class='columns method-parameter'>
-        <div class="column is-2"><label>Returns:</label></div>
-        <div class="column is-10">
-            
-                    
 
-<div class="columns">
-    
-    
-    <div class='column is-5 has-text-left'>
-        <label>Type: </label>
+
+
+
+                    </div>
+                </div>
+            </div>
         
-<span class="param-type">client</span>
-
-
+    
     </div>
     
-</div>
+    
 
-                
-        </div>
-    </div>
+    
 
+    
 
+    
 
+    
 
-</div>
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h1>Methods</h1>
+            <div class="members">
             
                 <div class="member">
 
 
     
-    <h4 class="name" id="createHandler">
-        <a class="href-link" href="#createHandler">#</a>
+    <h4 class="name" id="custom">
+        <a class="href-link" href="#custom">#</a>
         
         <span class="code-name">
             
-                createHandler<span class="signature">(client)</span><span class="type-signature"></span>
+                custom<span class="signature">(error)</span><span class="type-signature"> &rarr; {Embed}</span>
             
         </span>
     </h4>
     
 
     
-    
-    <div class="description">
-        Générer le command & event handler de naofumi_slashcommands
-    </div>
     
 
 
@@ -332,13 +273,13 @@
             
 <tr class="deep-level-0">
   
-      <td class="name"><code>client</code></td>
+      <td class="name"><code>error</code></td>
   
 
   <td class="type">
   
       
-<span class="param-type">Client</span>
+<span class="param-type">string</span>
 
 
   
@@ -348,7 +289,7 @@
 
   
 
-  <td class="description last">Le client discord</td>
+  <td class="description last"></td>
 </tr>
 
 
@@ -394,9 +335,9 @@
 
     
         <p class="tag-source">
-            <a href="main.js.html" class="button">View Source</a>
+            <a href="utils_naofumi.js.html" class="button">View Source</a>
             <span>
-                <a href="main.js.html">main.js</a>, <a href="main.js.html#line20">line 20</a>
+                <a href="utils_naofumi.js.html">utils/naofumi.js</a>, <a href="utils_naofumi.js.html#line58">line 58</a>
             </span>
         </p>
     
@@ -419,6 +360,31 @@
 
 
 
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    <div class='param-desc column is-7'>embed</div>
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Embed</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
+
 
 
 
@@ -428,22 +394,18 @@
 
 
     
-    <h4 class="name" id="startBot">
-        <a class="href-link" href="#startBot">#</a>
+    <h4 class="name" id="noperm">
+        <a class="href-link" href="#noperm">#</a>
         
         <span class="code-name">
             
-                startBot<span class="signature">()</span><span class="type-signature"></span>
+                noperm<span class="signature">()</span><span class="type-signature"> &rarr; {Embed}</span>
             
         </span>
     </h4>
     
 
     
-    
-    <div class="description">
-        Appeller createClient, Appeller createHandler et connecter le client
-    </div>
     
 
 
@@ -491,9 +453,9 @@
 
     
         <p class="tag-source">
-            <a href="main.js.html" class="button">View Source</a>
+            <a href="utils_naofumi.js.html" class="button">View Source</a>
             <span>
-                <a href="main.js.html">main.js</a>, <a href="main.js.html#line53">line 53</a>
+                <a href="utils_naofumi.js.html">utils/naofumi.js</a>, <a href="utils_naofumi.js.html#line45">line 45</a>
             </span>
         </p>
     
@@ -515,6 +477,29 @@
 
 
 
+
+    <div class='columns method-parameter'>
+        <div class="column is-2"><label>Returns:</label></div>
+        <div class="column is-10">
+            
+                    
+
+<div class="columns">
+    
+    
+    <div class='column is-5 has-text-left'>
+        <label>Type: </label>
+        
+<span class="param-type">Embed</span>
+
+
+    </div>
+    
+</div>
+
+                
+        </div>
+    </div>
 
 
 

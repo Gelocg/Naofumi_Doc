@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> commands/information/avatar.js</title>
+  <title> utils/naofumi.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>commands/information/avatar.js</h1>
+                    <h1>utils/naofumi.js</h1>
                 </header>
                 
 
@@ -87,89 +87,77 @@
         <article>
             <pre class="prettyprint source linenums"><code>
 /**
- * @file commands/information/anime.js
- * @description Cette commande permet de rechercher et récupérer des informations sur un anime
+ * @description Les utilitaires de Naofumi
  * @author gelo
- * @module commands/avatar
+ * @module utils
  */
 
-const { SlashCommandBuilder } = require("@discordjs/builders");
+const { MessageEmbed, User } = require("discord.js");
 const { halyma } = require("halymafunctions");
+const api = require("naofumiapi");
 
-module.exports = {
+/**
+ * @function multiline
+ * @description Affiche un message sur plusieurs lignes en console
+ * @param {Array} messages 
+ */
+function multiline(messages = [])
+{
+    console.log(messages.push("\n"))
+}
 
-    data: new SlashCommandBuilder()
-        .setName("avatar")
-        .setDescription("Récupérer l'avatar d'un utilisateur")
-        .addUserOption(option =>
-            option
-                .setName("user")
-                .setDescription("L'utilisateur dont vous souhaitez récupérer l'avatar")
-        ),
+/**
+ * @function createSocial
+ * @description Retourne un embed différent en fonction du nom de l'interaction
+ * @param {{interactionName, author, title}} param0 
+ * @returns {Embed}
+ */
+async function createSocial({ interactionName = "", author, title = "" })
+{
+    const interaction = await api.get.gif(interactionName)
+    return halyma.embed({
+        author: [title, author.displayAvatarURL()],
+        image: interaction.url,
+        description: `Vous ne voyez pas l'image ? [Cliquez ici](${ interaction.url })`
+    });
+}
 
-    execute: async (interaction, client) =>
+/**
+ * @class module:utils.Error
+ * @classdesc Multiples méthodes pour récupérer des embeds d'erreurs
+ */
+class Error
+{
+
+    /**
+     * @method module:utils.Error#noperm
+     * @returns {Embed}
+     */
+    static noperm()
     {
-
-        const target = interaction.options.getUser("user") || interaction.user;
-
-        /**
-         * @function generateAvatarLink
-         * @description Retourne un lien de l'avatar de la cible, dans le format indiqué
-         * @param {string} format 
-         * @returns {string} Lien de l'avatar
-         */
-        function generateAvatarLink(format)
-        {
-            return target.displayAvatarURL({ size: 1024, dynamic: true, format: format });
-        }
-
-        /**
-         * @function generateTitle
-         * @description Retourne une chaine de caractère utilisé pour le titre de l'embed.
-         * Elle vérifie qui est la cible de la commande Avatar si la cible est l'auteur de la commande il retourner
-         * une chaine de caracètre différente de celle retourner quand la cible n'est pas l'auteur
-         * @returns {string}
-         */
-        function generateTitle()
-        {
-            if (target === interaction.user)
-                return `${ target.username }, voici ton avatar`
-            else
-                return `${ interaction.user.username }, voici l'avatar de ${ target.username }`
-        }
-
-        /**
-         * @function generateAvatarEmbed
-         * @description Retourne un embed de l'avatar de la cible
-         * @returns {Embed}
-         */
-        function generateAvatarEmbed()
-        {
-
-            const avatarURL = generateAvatarLink("webp"),
-                description = `[png](${ generateAvatarLink("png") }) - [jpg](${ generateAvatarLink("jpg") }) - [gif](${ generateAvatarLink("gif") })`;
-
-            return halyma.embed({
-
-                image: avatarURL,
-                description: description,
-
-                author: [
-                    generateTitle(),
-                    interaction.user.displayAvatarURL()
-                ]
-
-            });
-
-        }
-
-        interaction.reply({
-            embeds: [generateAvatarEmbed()]
-        });
-
+        return halyma.embed({
+            color: "RED",
+            title: ":warning: Erreur",
+            description: "Vous n'avez pas la permission de faire ceci"
+        })
     }
 
-}</code></pre>
+    /**
+     * @method module:utils.Error#custom
+     * @param {string} error 
+     * @returns {Embed} embed
+     */
+    static custom(error = "")
+    {
+        return halyma.embed({
+            color: "RED",
+            title: ":warning: Erreur",
+            description: error
+        })
+    }
+
+}
+</code></pre>
         </article>
     </section>
 

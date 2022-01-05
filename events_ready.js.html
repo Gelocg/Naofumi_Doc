@@ -7,7 +7,7 @@
   
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title> commands/information/avatar.js</title>
+  <title> events/ready.js</title>
 
   <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -76,7 +76,7 @@
             <div class="content">
                 <header class="page-title">
                     <p>Source</p>
-                    <h1>commands/information/avatar.js</h1>
+                    <h1>events/ready.js</h1>
                 </header>
                 
 
@@ -87,87 +87,35 @@
         <article>
             <pre class="prettyprint source linenums"><code>
 /**
- * @file commands/information/anime.js
- * @description Cette commande permet de rechercher et récupérer des informations sur un anime
+ * @file events/ready.js
+ * @description Détecter quand le bot est prêt
  * @author gelo
- * @module commands/avatar
+ * @module commands/kiss
  */
 
-const { SlashCommandBuilder } = require("@discordjs/builders");
-const { halyma } = require("halymafunctions");
+const { multiline } = require("../utils/naofumi")
 
-module.exports = {
+module.exports = async (client) =>
+{
 
-    data: new SlashCommandBuilder()
-        .setName("avatar")
-        .setDescription("Récupérer l'avatar d'un utilisateur")
-        .addUserOption(option =>
-            option
-                .setName("user")
-                .setDescription("L'utilisateur dont vous souhaitez récupérer l'avatar")
-        ),
-
-    execute: async (interaction, client) =>
+    /**
+     * @function logReadyInformations
+     * @description Permet de logger un message en console pour prévenir que le bot est prêt à l'emploie
+     */
+    function logReadyInformations()
     {
 
-        const target = interaction.options.getUser("user") || interaction.user;
-
-        /**
-         * @function generateAvatarLink
-         * @description Retourne un lien de l'avatar de la cible, dans le format indiqué
-         * @param {string} format 
-         * @returns {string} Lien de l'avatar
-         */
-        function generateAvatarLink(format)
-        {
-            return target.displayAvatarURL({ size: 1024, dynamic: true, format: format });
-        }
-
-        /**
-         * @function generateTitle
-         * @description Retourne une chaine de caractère utilisé pour le titre de l'embed.
-         * Elle vérifie qui est la cible de la commande Avatar si la cible est l'auteur de la commande il retourner
-         * une chaine de caracètre différente de celle retourner quand la cible n'est pas l'auteur
-         * @returns {string}
-         */
-        function generateTitle()
-        {
-            if (target === interaction.user)
-                return `${ target.username }, voici ton avatar`
-            else
-                return `${ interaction.user.username }, voici l'avatar de ${ target.username }`
-        }
-
-        /**
-         * @function generateAvatarEmbed
-         * @description Retourne un embed de l'avatar de la cible
-         * @returns {Embed}
-         */
-        function generateAvatarEmbed()
-        {
-
-            const avatarURL = generateAvatarLink("webp"),
-                description = `[png](${ generateAvatarLink("png") }) - [jpg](${ generateAvatarLink("jpg") }) - [gif](${ generateAvatarLink("gif") })`;
-
-            return halyma.embed({
-
-                image: avatarURL,
-                description: description,
-
-                author: [
-                    generateTitle(),
-                    interaction.user.displayAvatarURL()
-                ]
-
-            });
-
-        }
-
-        interaction.reply({
-            embeds: [generateAvatarEmbed()]
-        });
+        multiline.log([
+            "====================",
+            `${ client.user.tag } est prêt`,
+            `sur ${ client.guilds.cache.size } guilds`,
+            `pour un total de ${ client.users.cache.size } utilisateurs`,
+            "===================="
+        ]);
 
     }
+
+    logReadyInformations();
 
 }</code></pre>
         </article>
