@@ -1,0 +1,252 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> commands/information/anime.js</title>
+
+  <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="./build/entry.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,400,700|Inconsolata,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+  <link type="text/css" rel="stylesheet" href="https://jmblog.github.io/color-themes-for-google-code-prettify/themes/tomorrow-night.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/app.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/iframe.css">
+  <link type="text/css" rel="stylesheet" href="">
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  
+</head>
+
+
+
+<body class="layout small-header">
+    <div id="stickyNavbarOverlay"></div>
+    
+
+<div class="top-nav">
+    <div class="inner">
+        <a id="hamburger" role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+        <div class="logo">
+            
+            
+        </div>
+        <div class="menu">
+            
+            <div class="navigation">
+                <a
+                    href="index.html"
+                    class="link"
+                >
+                    API Documentation
+                </a>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+</div>
+    <div id="main">
+        <div
+            class="sidebar "
+            id="sidebarNav"
+        >
+            
+            <nav>
+                
+                    <h2><a href="index.html">Documentation</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#createChannelInfoVariables">createChannelInfoVariables</a></li><li><a href="global.html#createClient">createClient</a></li><li><a href="global.html#createHandler">createHandler</a></li><li><a href="global.html#generateAvatarEmbed">generateAvatarEmbed</a></li><li><a href="global.html#generateAvatarLink">generateAvatarLink</a></li><li><a href="global.html#generateHelpDescription">generateHelpDescription</a></li><li><a href="global.html#generateHelpEmbed">generateHelpEmbed</a></li><li><a href="global.html#generateTitle">generateTitle</a></li><li><a href="global.html#getAnimeNameList">getAnimeNameList</a></li><li><a href="global.html#getAnimeRow">getAnimeRow</a></li><li><a href="global.html#getFrenchActivityType">getFrenchActivityType</a></li><li><a href="global.html#getMemberActivities">getMemberActivities</a></li><li><a href="global.html#getMemberStatus">getMemberStatus</a></li><li><a href="global.html#getTargetInfos">getTargetInfos</a></li><li><a href="global.html#getTargetInfosEmbed()">getTargetInfosEmbed()</a></li><li><a href="global.html#startBot">startBot</a></li></ul></div>
+                
+            </nav>
+        </div>
+        <div class="core" id="main-content-wrapper">
+            <div class="content">
+                <header class="page-title">
+                    <p>Source</p>
+                    <h1>commands/information/anime.js</h1>
+                </header>
+                
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * @file commands/information/anime.js
+ * @description Commande anime
+ * @author gelo
+ */
+
+const { SlashCommandBuilder } = require("@discordjs/builders");
+const { MessageActionRow, MessageSelectMenu } = require("discord.js");
+const api = require("naofumiapi");
+const { error } = require("../../utils/naofumi");
+const { halyma } = require("halymafunctions");
+
+module.exports = {
+
+    data: new SlashCommandBuilder()
+        .setName("anime")
+        .setDescription("Rechercher un anime")
+
+        .addStringOption(option =>
+            option
+                .setName("query")
+                .setDescription("Le nom de l'anime a rechercher")
+                .setRequired(true)
+        ),
+
+    execute: async (interaction, client) =>
+    {
+
+        /**
+         * @function getAnimeNameList
+         * @description Retourne la liste des noms d'animes trouvé avec le query spécifié
+         * si aucun anime n'est trouvé, elle retourne un array vide
+         * @param {string} query 
+         * @returns {nameList, animes}
+         */
+        async function getAnimeNamesList(query)
+        {
+
+            const animes = await api.get.anime(qery);
+
+            let animeNamesList = [...new Set(
+                animes.map((a) => a.title)
+            )];
+
+            return { nameList: animeNamesList, animes: animes };
+
+        }
+
+        /**
+         * @function getAnimeRow
+         * @description Retourne MessageActionRow contenant maximum 20 items
+         * @param {array} animeNameList 
+         * @returns 
+         */
+        function getAnimeRow(animeNameList)
+        {
+
+            animeNameList = animeNameList.slice(0, 20);
+            const animeComponents = animeNameList.map((animeName) =>
+            {
+                return {
+                    label: animeName,
+                    value: animeName
+                }
+            });
+
+            const animeRow = new MessageActionRow()
+                .addComponents(
+                    new MessageSelectMenu()
+                        .setCustomId("animeSelect")
+                        .setPlaceholder("Nothing selected yet")
+                        .addOptions(animeComponents)
+                )
+
+            return animeRow;
+
+        }
+
+
+        await interaction.deferReply();
+
+        const animeListes = await getAnimeNamesList();
+        const [animeNamesList, animes] = [animeListes.nameList, animeListes.animes];
+
+        if (!animeNamesList[0])
+        {
+            return interaction.editReply({
+                embeds: [error.custom(`Aucun anime n'a été trouvé pour votre recherche.. Veuillez reessayer en vérifiant l'orthographe`)]
+            });
+        }
+
+        const animeRow = getAnimeRow(animeNamesList);
+        await interaction.editReply({
+            content: `Nous avons trouvez ${ animeNamesList.length } résultats pour votre recherche. Veuillez en séléctionnez un`,
+            components: [animeRow]
+        });
+
+
+        /* Nous récupérons l'anime que l'utilisateur chosis puis nous créons l'embed
+        et nous l'envoyons */
+        const filter = (rowInteraction) => (rowInteraction.user === interaction.user);
+        const collector = interaction.channel.createMessageComponentCollector({ filter });
+
+        collector.on('collect', async (rowInteraction) =>
+        {
+
+            const anime = animes.find((anime) => anime.title === rowInteraction.values[0]);
+            anime.studios = anime.studios || "Aucun";
+
+            const animeEmbed = halyma.embed({
+                author: [anime.title, anime.thumbnail],
+                thumbnail: anime.thumbnail,
+                description: anime.synopsis,
+                fields: [
+                    { name: "Episodes", value: anime.episodes, inline: true },
+                    { name: "Studios", value: Array.isArray(anime.studios) ? anime.studios.join(", ") : anime.studios, inline: true },
+                    { name: "Date de début", value: anime.start_date ? anime.start_date : "Aucun" },
+                    { name: "Genres", value: anime.genres.join(", ") ? anime.genres.join(", ") : "Aucun" },
+                    { name: "Lien de streaming", value: anime.link },
+                    { name: "Trailer", value: anime.trailer ? anime.trailer : "Aucun" }
+                ]
+            });
+
+            await interaction.editReply({
+                embeds: [animeEmbed],
+                components: [],
+                content: `Voici les informations pour ${ anime.title }`
+            });
+
+            collector.stop()
+
+        })
+
+    }
+
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+            </div>
+            
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a></p>
+                    <p class="sidebar-created-by">
+                        <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
+                        <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers - JavaScript Development Agency</a>
+                    </p>
+                </div>
+            </footer>
+            
+        </div>
+        <div id="side-nav" class="side-nav">
+        </div>
+    </div>
+<script src="scripts/app.min.js"></script>
+<script>PR.prettyPrint();</script>
+<script src="scripts/linenumber.js"> </script>
+
+</body>
+</html>
